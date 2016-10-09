@@ -1,13 +1,28 @@
 // Include gulp
 var gulp = require('gulp');
+
+
 // Include plugins
 var jade = require('gulp-jade');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var imagemin = require('gulp-imagemin');
-var cache = require('gulp-cache');
 
+
+//  Rather than have to specify each plugin, gulp-load-plugins will search your
+//  packages.json file and automatically include them as plugins.pluginName().
+
+var plugins = require("gulp-load-plugins")({
+  pattern: ['gulp-*', 'gulp.*'],
+  replaceString: /\bgulp[\-.]/
+});
+
+
+/*  Include plugins in gulp-load-plugins way 
+
+    var plugins.rename = require('gulp-rename');
+    var plugins.imagemin = require('gulp-imagemin');
+    var plugins.cache = require('gulp-cache');
+*/
 
 // Default Task
 gulp.task('default', ['scripts', 'images', 'watch']);
@@ -28,7 +43,7 @@ gulp.task('default', ['scripts', 'images', 'watch']);
 gulp.task('scripts', function(){
     return gulp.src('src/js/*.js')      // pick up all the js files from this location
         .pipe(concat('main.js'))        // concatenate the above picked js files to a main.js file
-        .pipe(rename({suffix: '.min'})) // renames the file main.min.js using the gulp-rename plugin
+        .pipe(plugins.rename({suffix: '.min'})) // renames the file main.min.js using the gulp-rename plugin
         .pipe(uglify())                 // minifies using uglify
         .pipe(gulp.dest('build/js'))    // store that main.js file in build/js directory
 });
@@ -38,7 +53,7 @@ gulp.task('scripts', function(){
 
 gulp.task('images', function(){
    return gulp.src('src/images/**/*') 
-    .pipe(cache(imagemin({optimizationLevel : 5, progressive : true, interlaced : true})))
+    .pipe(plugins.cache(plugins.imagemin({optimizationLevel : 5, progressive : true, interlaced : true})))
     .pipe(gulp.dest('build/img'));
 });
 
