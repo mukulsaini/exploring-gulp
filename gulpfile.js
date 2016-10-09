@@ -7,6 +7,9 @@ var jade = require('gulp-jade');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 
+var requireDir = require('require-dir')('./gulp-tasks'); // include every file in the gulp-tasks directory into your gulpfile.
+
+
 
 //  Rather than have to specify each plugin, gulp-load-plugins will search your
 //  packages.json file and automatically include them as plugins.pluginName().
@@ -25,7 +28,7 @@ var plugins = require("gulp-load-plugins")({
 */
 
 // Default Task
-gulp.task('default', ['scripts', 'images', 'watch']);
+gulp.task('default', ['scripts', 'images', 'watch', 'print', 'print2']);
 
 
 //
